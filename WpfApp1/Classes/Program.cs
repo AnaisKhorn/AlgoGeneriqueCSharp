@@ -17,12 +17,12 @@ namespace WpfApp1
             int number = 10;
 
 
-            Ville v = new Ville("A", "Toulon", 14, 220);
-            Ville v2 = new Ville("B", "Nice", 20, 50);
-            Ville v3 = new Ville("C", "Sophia", 100, 10);
-            Ville v4 = new Ville("D", "Monaco", 62, 78);
-            Ville v5 = new Ville("E", "Bordeaux", 50, 200);
-            Ville v6 = new Ville("F", "Paris", 180, 398);
+            Ville v = new Ville(1, "Toulon", 14, 220);
+            Ville v2 = new Ville(2, "Nice", 20, 50);
+            Ville v3 = new Ville(3, "Sophia", 100, 10);
+            Ville v4 = new Ville(4, "Monaco", 62, 78);
+            Ville v5 = new Ville(5, "Bordeaux", 50, 200);
+            Ville v6 = new Ville(6, "Paris", 180, 398);
             List<Ville> allVilles = new List<Ville>();
             allVilles.Add(v);
             allVilles.Add(v2);
@@ -62,7 +62,6 @@ namespace WpfApp1
 
             //Console.WriteLine("Chemin parcouru : " + cm.Path);
             //Console.WriteLine("Test de distances : " + cm.Score);
-            Console.ReadKey();
             //Console.Write("Test d'affichage : " + v.nom + " " + cm.Villes);
             //Console.WriteLine("Test d'affichage : ");
         }

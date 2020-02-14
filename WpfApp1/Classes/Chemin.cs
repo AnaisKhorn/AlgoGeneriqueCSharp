@@ -8,7 +8,6 @@ namespace WpfApp1
 {
     public class Chemin
     {
-       
         public List<Ville> Villes { get; set; }
 
         public Chemin(List<Ville> villes)
@@ -24,52 +23,6 @@ namespace WpfApp1
         public Chemin()
         {
         }
-
-        /*   public List<Chemin> setFirstGen(int nb, Chemin cm)
-           {
-               int limit = 0;
-               do
-               {
-                   bool alreadyExist = false;
-                   Chemin pivot = new Chemin();
-                   pivot.Villes = new List<Ville>(cm.Villes); // appel au constructeur par copie de la classe List
-
-                   pivot.Path.Clear();
-                   //int index = rnd.Next(pivot.Villes.Count);
-                   for (int i = 0; i < cm.Villes.Count - 1; i++)
-                   {
-                       int destination = rnd.Next(pivot.Villes.Count);
-                       pivot.Path.Append(pivot.Villes[destination].ID);
-                       pivot.Villes.RemoveAt(destination);
-                   }
-                   pivot.Path.Append(pivot.Villes[0].ID);
-                   Console.WriteLine("Chemin parcouru : " + pivot.Path);
-
-                   for (int i = 0; i< Chemins.Count; i++)
-                   {
-                       if (Chemins[i].Path.Equals(pivot.Path))
-                       {
-                           alreadyExist = true;
-                       }
-                   }
-                   if (alreadyExist == false)
-                   {
-                   Chemins.Add(pivot);
-                       limit++;
-                   }
-                   else
-                   {
-                       Console.WriteLine("Le chemin existe déjà ! ");
-                   }
-
-
-
-               } while (limit < nb);
-
-
-               return Chemins;
-           }*/
-
         public static List<Chemin> setFirstGen(int nb, List<Ville> vs)
         {
             int limit = 0;
@@ -87,7 +40,7 @@ namespace WpfApp1
                 for (int i = 0; i < vs.Count; i++)
                 {
                     int destination = rnd.Next(pivot.Villes.Count);
-                    pivot.Path.Append(pivot.Villes[destination].ID);
+                    pivot.Path.Append(pivot.Villes[destination].Nom + " ");
                     pivot.Villes.RemoveAt(destination);
                 }
                 //pivot.Path.Append(pivot.Villes[0].ID);
@@ -100,12 +53,13 @@ namespace WpfApp1
                         alreadyExist = true;
                     }
                 }
+                String[] listVilles = System.Text.RegularExpressions.Regex.Split(pivot.Path.ToString(), " ");
                 if (alreadyExist == false)
                 {
                     for (int i = 0; i < vs.Count; i++)
                     {
                         IEnumerable<Ville> v = from vill in vs
-                                               where vill.ID == pivot.Path[i].ToString()
+                                               where vill.Nom == listVilles[i]
                                                select vill;
                         foreach (Ville vl in v)
                         {
@@ -138,7 +92,7 @@ namespace WpfApp1
             List<Chemin> CheminsCrossOver = new List<Chemin>();
             for (int i = 0; i < 3 * nb; i++)
             {
-
+                List<Ville> testIntegration = new List<Ville>();
                 int r = rnd.Next(chemins.Count);
                 //Chemin ch1 = chemins[r];
                 Chemin ch1 = new Chemin(chemins[r].Villes, chemins[r].Path);
@@ -150,14 +104,36 @@ namespace WpfApp1
                 } while (r2 == r);
 
                 Chemin ch2 = new Chemin(chemins[r2].Villes, chemins[r2].Path);
+                String[] listVilles1 = System.Text.RegularExpressions.Regex.Split(ch1.Path.ToString(), " ");
+                // on enleve le dernier element "" qui envoie une nullException pour le reste du code sinon
+                listVilles1 = listVilles1.Take(listVilles1.Count() - 1).ToArray();
+                String[] listVilles2 = System.Text.RegularExpressions.Regex.Split(ch2.Path.ToString(), " ");
+                listVilles2 = listVilles2.Take(listVilles2.Count() - 1).ToArray();
+
                 int pivot = rnd.Next(ch1.Villes.Count);
                 //découpage
                 Chemin ch3 = new Chemin();
-                ch3.Villes = ch1.Villes.Take(pivot).ToList();
-                ch3.Villes.AddRange(ch2.Villes.Skip(pivot).ToList());
-                var test1 = ch1.Villes.Take(pivot).ToList();
-                var test2 = ch2.Villes.Skip(pivot).ToList();
-
+                for (int k = 0; k < pivot; k++)
+                {
+                    IEnumerable<Ville> v = from vill in villesDepart
+                                           where vill.Nom == listVilles1[k].ToString()
+                                           select vill;
+                    foreach (Ville vl in v)
+                    {
+                        testIntegration.Add(vl);
+                    }
+                }
+                for (int k = pivot; k < villesDepart.Count; k++)
+                {
+                    IEnumerable<Ville> v = from vill in villesDepart
+                                           where vill.Nom == listVilles2[k].ToString()
+                                           select vill;
+                    foreach (Ville vl in v)
+                    {
+                        testIntegration.Add(vl);
+                    }
+                }
+                ch3.Villes = testIntegration;
                 //on prépare une liste qui servira à identifier les doublons
                 List<String> listId = new List<String>();
 
@@ -166,22 +142,24 @@ namespace WpfApp1
 
                 for (int l = 0; l < villesDepart.Count; l++)
                 {
-                    listVillesID.Add(ch1.Villes[l].ID);
+                    listVillesID.Add(ch1.Villes[l].Nom);
                 }
 
                 // on place dans les liste les bons éléments et on met du 
                 // vide là où il y a des doublons
                 for (int l = 0; l < villesDepart.Count; l++)
                 {
-                    if (!listId.Contains(ch3.Villes[l].ID))
+                    if (!listId.Contains(ch3.Villes[l].Nom))
                     {
-                        listId.Add(ch3.Villes[l].ID);
+                        listId.Add(ch3.Villes[l].Nom);
                     }
                     else
                     {
                         listId.Add("");
                     }
                 }
+                String[] listTest = System.Text.RegularExpressions.Regex.Split(ch1.Path.ToString(), " ");
+                listTest = listTest.Take(listTest.Count() - 1).ToArray();
 
                 // ici nous remplaçons les valeurs manquantes par les ID non utilisés
                 // puis nous les mettons dans le chemin que nous ajouterons à la liste
@@ -189,36 +167,13 @@ namespace WpfApp1
                 {
                     if (listId[l] == "")
                     {
-                        List<String> listId2 = listVillesID.Except(listId).ToList();
-                        listId[l] = listId2[rnd.Next(listId2.Count)];
+                        List<String> listId2 = (listVillesID).Except(listId).ToList();
+                        listTest[l] = listId2[rnd.Next(listId2.Count)];
                     }
-                    ch3.Path.Append(listId[l]);
+                    ch3.Path.Append(listTest[l] + " ");
 
                 }
 
-                // nous mettons les villes bien dans l'ordre une fois le nouveau path crée
-                // (servira pour calculer le score)
-                ch3.Villes.Clear();
-                for (int k = 0; k < villesDepart.Count; k++)
-                {
-                    IEnumerable<Ville> v = from vill in villesDepart
-                                           where vill.ID == ch3.Path[k].ToString()
-                                           select vill;
-                    foreach (Ville vl in v)
-                    {
-                        ch3.Villes.Add(vl);
-                    }
-                }
-
-
-
-                //listId = listId.ToList<Ville>().Union(Villes).ToList();
-                /*ch3.Villes = ch3.Villes.Distinct().ToList();
-                ch3.Villes = ch3.Villes.Union(Villes).ToList();*/
-                /*for (int j = 0; j < ch3.Villes.Count; j++)
-                {
-                    ch3.Path.Append(ch3.Villes[j].ID);
-                }*/
                 //ajout du nouveau chemin dans la liste
                 CheminsCrossOver.Add(ch3);
             }
@@ -239,8 +194,11 @@ namespace WpfApp1
                 {
                     rand2 = rnd.Next(ch1.Villes.Count);
                 } while (rand2 == rand1);
-                String permu1 = ch1.Path[rand1].ToString();
-                String permu2 = ch1.Path[rand2].ToString();
+
+                String[] listVilles = System.Text.RegularExpressions.Regex.Split(ch1.Path.ToString(), " ");
+
+                String permu1 = listVilles[rand1].ToString();
+                String permu2 = listVilles[rand2].ToString();
                 //permutation
                 String t = "&";/*
                 permu1 = permu2;
@@ -278,24 +236,14 @@ namespace WpfApp1
                 foreach (Chemin cc in v)
                 {
                     best.Add(cc);
+                    scores = scores.Where(Score => Score != cc.Score).ToArray();
                     break;
                 }
                 // pour enlever le 1er element de la liste
-                scores = scores.Where((item, index) => index != 0).ToArray();
+                //scores = scores.Where((item, index) => index != 0).ToArray();
 
                 // return best;
             }
-            /*
-            IEnumerable<Chemin> v = from C in cm
-                                   where C.Score == scores[0] || C.Score == scores[1]
-                                   select C;
-
-            foreach (Chemin cc in v)
-            {
-                best.Add(cc);
-
-            }
-   */
 
             // recrée le score pour véridier que les données soient les bonnes.
             scores = new double[cm.Count];
@@ -324,7 +272,7 @@ namespace WpfApp1
 
         public double Score { get; set; } = 0;
         public StringBuilder Path = new StringBuilder();
-        public static double Distance(int x1, int y1, int x2, int y2)
+        public static double Distance(double x1, double y1, double x2, double y2)
         {
             return Math.Sqrt(Math.Pow(x2 - x1, 2) + Math.Pow(y2 - y1, 2));
         }

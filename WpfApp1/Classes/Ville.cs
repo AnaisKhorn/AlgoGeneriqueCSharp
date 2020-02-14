@@ -11,22 +11,22 @@ namespace WpfApp1
     public class Ville
     {
         [PrimaryKey, AutoIncrement]
-        public string ID { get; set; }
+        public int ID { get; set; }
         [Column("Name")]
         public string Nom { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
 
         public Ville() { }
 
-        public Ville(string nom, int x, int y)
+        public Ville(string nom, double x, double y)
         {
             Nom = nom;
             X = x;
             Y = y;
         }
 
-        public Ville(string id, string nom, int x, int y)
+        public Ville(int id, string nom, double x, double y)
         {
             ID = id;
             Nom = nom;

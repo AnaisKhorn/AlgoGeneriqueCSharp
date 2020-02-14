@@ -23,11 +23,21 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        List<Ville> items = new List<Ville>();
         public MainWindow()
         {
             InitializeComponent();
         }
-
+        private void testClic(object sender, MouseEventArgs e)
+        {
+            MouseEventArgs me = (MouseEventArgs)e;
+            var test = me.GetPosition(testCanvas);
+            Ville newVille = new Ville((items.Count + 1), "Ville " + (items.Count + 1), test.X, test.Y);
+            items.Add(newVille);
+            listVilles.ItemsSource = items;
+        }
+/*
         private void saveVilles(object sender, RoutedEventArgs e)
         {
             Ville ville = new Ville()
@@ -45,5 +55,6 @@ namespace WpfApp1
             Close();
 
         }
+        */
     }
 }
