@@ -6,62 +6,67 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <TabControl HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" Width="459">
-          <TabItem Header="Carte">
-            <Grid Background="#FFE5E5E5">
-              <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="7*"/>
-              </Grid.RowDefinitions>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="28*"/>
-                <ColumnDefinition Width="10*"/>
-                <ColumnDefinition Width="189*"/>
-              </Grid.ColumnDefinitions>
-              <Canvas Name="testCanvas" MouseUp="testClic" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="370" Margin="10,10,0,0" VerticalAlignment="Top" Width="434" Grid.RowSpan="2">
-                <!--<Canvas.InputBindings>
+    <Window.Resources>
+        <DataTemplate x:Key="listDesVilles">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Nom : "/>
+                <TextBlock Grid.Column="1" Text="{Binding Nom}"/>
+                <TextBlock Grid.Column="2" Text=" - Axe horizontal : "/>
+                <TextBlock Grid.Column="3" Text="{Binding X}" />
+                <TextBlock Grid.Column="4" Text=" - Axe vertical : "/>
+                <TextBlock Grid.Column="5" Text="{Binding Y}" />
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid >
+        <TabControl >
+            <TabItem Header="Carte">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60*"/>
+                        <ColumnDefinition Width="50*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ListBox Name="listVilles" Grid.Column="1" ItemTemplate="{StaticResource listDesVilles}">
+                    </ListBox>
+                    <Canvas Name="testCanvas" MouseUp="testClic" Grid.ColumnSpan="2" HorizontalAlignment="Left" 
+                            Height="370" VerticalAlignment="Top" Width="434">
+                        <!--<Canvas.InputBindings>
                             <MouseBinding Gesture="LeftClick"
                                           >
                                 
                             </MouseBinding>
                         </Canvas.InputBindings>-->
-                <Image  Name="testImage" HorizontalAlignment="Left" Height="370" Margin="10,10,0,0" VerticalAlignment="Top" Width="434" Grid.ColumnSpan="3" Grid.RowSpan="2" Source="Assets/map-of-france.jpg"/>
-              </Canvas>
-              <ListView Margin="388,-4,-339.4,9.6" Name="listVilles" RenderTransformOrigin="15.631,1.389" Grid.Column="2" Grid.RowSpan="2">
-                <ListView.ItemTemplate>
-                  <DataTemplate>
-                    <WrapPanel>
-                      <TextBlock Text="{Binding Nom}" FontWeight="Bold" />
-                      <TextBlock Text=", " />
-                      <TextBlock Text="{Binding X}" FontWeight="Bold" />
-                      <TextBlock Text=", " />
-                      <TextBlock Text="{Binding Y}" TextDecorations="Underline" Foreground="Blue" Cursor="Hand" />
-                    </WrapPanel>
-                  </DataTemplate>
-                </ListView.ItemTemplate>
-              </ListView>
-            </Grid>
-          </TabItem>
-          <TabItem Header="Liste" Height="22" VerticalAlignment="Top">
-            <Grid Background="#FFE5E5E5">
-              <ListView Name="listViles" HorizontalAlignment="Left" Height="181" VerticalAlignment="Top" Width="275">
-                <ListView.View>
-                  <GridView>
-                    <GridViewColumn />
-                  </GridView>
-                </ListView.View>
-              </ListView>
-            </Grid>
-          </TabItem>
-          <TabItem Header="Paramètres">
-            <Grid Background="#FFE5E5E5">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="17*"/>
-                <ColumnDefinition Width="437*"/>
-              </Grid.ColumnDefinitions>
-            </Grid>
-          </TabItem>
+                        <Image Name="testImage" Height="392"  
+                               Source="Assets/carteFrance.jpg" Width="434"/>
+                    </Canvas>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Liste" Height="22" VerticalAlignment="Top">
+                <Grid Background="#FFE5E5E5">
+                    <ListView Name="listViles" HorizontalAlignment="Left" Height="295" VerticalAlignment="Top" Width="444">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn />
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Paramètres">
+                <Grid Background="#FFE5E5E5">
+
+                </Grid>
+            </TabItem>
         </TabControl>
     </Grid>
 </Window>

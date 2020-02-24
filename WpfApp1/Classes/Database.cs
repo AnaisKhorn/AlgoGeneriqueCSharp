@@ -12,9 +12,13 @@ namespace WpfApp1.Classes
         private static Database instance = new Database();
 
 
-        SQLiteConnection connection;
+      private static SQLiteConnection connection = null;
         private Database()
         {
+            if (connection == null)
+            {
+
+            }
             SQLiteConnection co = new SQLiteConnection("db");
             co.CreateTable<Ville>();
             
@@ -34,6 +38,10 @@ namespace WpfApp1.Classes
 
         public static Database GetDatabase()
         {
+            if (instance == null)
+            {
+                instance = new Database();
+            }
             return instance;
         }
 

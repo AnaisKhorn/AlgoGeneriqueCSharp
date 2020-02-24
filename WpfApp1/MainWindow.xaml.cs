@@ -35,7 +35,8 @@ namespace WpfApp1
             var test = me.GetPosition(testCanvas);
             Ville newVille = new Ville((items.Count + 1), "Ville " + (items.Count + 1), test.X, test.Y);
             items.Add(newVille);
-            listVilles.ItemsSource = items;
+
+            listVilles.Items.Add(newVille);
         }
 /*
         private void saveVilles(object sender, RoutedEventArgs e)
