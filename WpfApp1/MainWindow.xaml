@@ -37,8 +37,8 @@
 
                     <ListBox Name="listVilles" Grid.Column="1" ItemTemplate="{StaticResource listDesVilles}">
                     </ListBox>
-                    <Canvas Name="testCanvas" MouseUp="testClic" Grid.ColumnSpan="2" HorizontalAlignment="Left" 
-                            Height="370" VerticalAlignment="Top" Width="434">
+                    <Canvas Name="testCanvas" MouseUp="testClic"  HorizontalAlignment="Left" 
+                            Height="370" VerticalAlignment="Top">
                         <!--<Canvas.InputBindings>
                             <MouseBinding Gesture="LeftClick"
                                           >
@@ -64,7 +64,15 @@
             </TabItem>
             <TabItem Header="Paramètres">
                 <Grid Background="#FFE5E5E5">
-
+                    <TextBlock Margin="0,10,612,356.6" RenderTransformOrigin="0.828,-0.757">Nombre de générations à créer :</TextBlock>
+                    <TextBox Name="nbGenerations" Margin="181,10,431,356.6">2</TextBox>
+                    <TextBlock Margin="0,38,612,328.6" RenderTransformOrigin="0.828,-0.757">Nombre de chemins à générer :</TextBlock>
+                    <TextBox Name="nbChemins" Margin="181,38,431,328.6">10</TextBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Résultats">
+                <Grid Background="#FFE5E5E5">
+                    <Button Click="launchAlgorithm" Margin="307,0,380,356.6" RenderTransformOrigin="4.278,0.348">Lancer le calcul</Button>
                 </Grid>
             </TabItem>
         </TabControl>
