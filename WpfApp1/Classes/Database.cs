@@ -1,6 +1,7 @@
 ﻿using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,22 +10,35 @@ namespace WpfApp1.Classes
 {
     public class Database
     {
-        private static Database instance = new Database();
+        private static Database instance = null;
+        private static SQLiteConnection connection = null;
 
-
-      private static SQLiteConnection connection = null;
         private Database()
         {
             if (connection == null)
             {
+                connection = new SQLiteConnection("db");
+
+                if(connection.GetTableInfo("Ville").Count == 0)
+                {
+                    connection.CreateTable<Ville>();
+                }
 
             }
-            SQLiteConnection co = new SQLiteConnection("db");
-            co.CreateTable<Ville>();
-            
-            
+
+            instance = this;
+                 
         }
-       
+
+        public static Database GetDatabase()
+        {
+            if (instance == null)
+            {
+                instance = new Database();
+            }
+            return instance;
+        }
+
 
         public void saveVille(Ville v)
         {
@@ -36,13 +50,25 @@ namespace WpfApp1.Classes
             return connection.Table<Ville>().ToList<Ville>();
         }
 
-        public static Database GetDatabase()
+        public ObservableCollection<Ville> GetVilles()
         {
-            if (instance == null)
-            {
-                instance = new Database();
-            }
-            return instance;
+            return new ObservableCollection<Ville>(connection.Table<Ville>().ToList());
+        }
+
+        public void DeleteVille(Ville v)
+        {
+            connection.Delete<Ville>(v.Nom);
+        }
+
+        public void DeleteAllVille()
+        {
+            connection.DeleteAll<Ville>();
+        }
+
+        public void KillConnection()
+        {
+            connection.Close();
+            instance = null;
         }
 
 
